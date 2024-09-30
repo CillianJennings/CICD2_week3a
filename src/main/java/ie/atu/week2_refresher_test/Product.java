@@ -1,9 +1,6 @@
 package ie.atu.week2_refresher_test;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,13 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Product {
 
-    @NotNull
+    @NotNull(message = "Must have a value")
     private long id;
 
-    @NotBlank
-    @Size(min = 3, max=30, message = "Name must be between 3 to 30")
+    @NotBlank(message = "A value need to be entered")
+    @Size(min = 3, max=30, message = "Name must be between 3 to 30 characters")
     private String name;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Cannot be a negative number")
+    @Max(value=1000, message = "Enter a smaller value")
     private double price;
 }

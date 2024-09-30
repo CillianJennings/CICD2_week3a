@@ -1,12 +1,11 @@
 package ie.atu.week2_refresher_test;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/products/")
@@ -17,20 +16,19 @@ public class ProductController {
         this.productService = productService;
     }
 
-
     @GetMapping("get")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @PostMapping("add")
-    public ResponseEntity<String> addProduct(@RequestBody Product newProduct) {
+    public ResponseEntity<String> addProduct(@Valid @RequestBody Product newProduct) {
         productService.addProduct(newProduct);
         return new ResponseEntity<>("Product successfully created\n", HttpStatus.CREATED);
     }
 
     @PutMapping("edit/{id}")
-    public ResponseEntity<String> editProduct(@PathVariable long id, @RequestBody Product changedProduct) {
+    public ResponseEntity<String> editProduct(@Valid @PathVariable long id, @RequestBody Product changedProduct) {
         boolean status = productService.editProduct(id, changedProduct);
 
         if(status){
@@ -40,7 +38,7 @@ public class ProductController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> editProduct(@PathVariable long id) {
+    public ResponseEntity<String> editProduct(@Valid @PathVariable long id) {
         boolean status = productService.deleteProduct(id);
 
         if(status){
@@ -48,6 +46,4 @@ public class ProductController {
         }else
             return new ResponseEntity<>("Product not found\n", HttpStatus.BAD_REQUEST);
     }
-
-
 }
