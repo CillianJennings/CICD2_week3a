@@ -11,9 +11,12 @@ import java.util.List;
 @RequestMapping("/products/")
 public class ProductController {
     private final ProductService productService;
+    private final Inventory inventory;
+
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, Inventory inventory) {
         this.productService = productService;
+        this.inventory = inventory;
     }
 
     @GetMapping("get")
@@ -21,10 +24,12 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+
     @PostMapping("add")
-    public ResponseEntity<String> addProduct(@Valid @RequestBody Product newProduct) {
+    public String addProduct(@Valid @RequestBody Product newProduct) {
         productService.addProduct(newProduct);
-        return new ResponseEntity<>("Product successfully created\n", HttpStatus.CREATED);
+        String responseFromInventory = inventory.storeProduct(newProduct);
+        return "Product successfully created\n" + responseFromInventory;
     }
 
     @PutMapping("edit/{id}")
