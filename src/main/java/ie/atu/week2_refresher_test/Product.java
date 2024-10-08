@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class Product {
 
     @NotNull(message = "Must have a value")
+    @PositiveOrZero(message = "Cannot be a negative number")
     private long id;
 
     @NotBlank(message = "A value need to be entered")
